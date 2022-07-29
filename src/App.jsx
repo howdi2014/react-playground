@@ -1,29 +1,41 @@
-import { useEffect } from "react";
+import React from "react";
+import { useState } from "react";
 import "./App.css";
 
-function Child1() {
-  useEffect(() => {
-    console.log("Child1");
-  });
-  return (
-    <>
-      <Child2 />
-    </>
-  );
+class Child extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      firstName: "kim",
+      lastName: "jisu",
+    };
+  }
+  static getDerivedStateFromProps(nextProps, prevState) {
+    // console.log(
+    //   `nextProps: ${JSON.stringify(nextProps)} prevState: ${JSON.stringify(
+    //     prevState
+    //   )}`
+    // );
+    console.log(nextProps.firstName, prevState.firstName);
+    if (nextProps.firstName !== prevState.firstName)
+      return { firstName: nextProps.firstName };
+    else return null;
+  }
+
+  render() {
+    return <>name: {this.state.firstName}</>;
+  }
 }
-function Child2() {
-  useEffect(() => {
-    console.log("Child2");
-  });
-  return <></>;
-}
+
 function App() {
-  useEffect(() => {
-    console.log("App! the parent");
-  });
+  const [firstName, setFirstName] = useState("min");
+  const [lastName, setLastName] = useState("");
+
   return (
     <div className="App">
-      <Child1 />
+      <Child firstName={firstName} lastName={lastName} />
+      <br />
+      <button onClick={() => setFirstName("minsu")}>button</button>
     </div>
   );
 }
