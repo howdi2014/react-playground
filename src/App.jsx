@@ -1,42 +1,41 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import "./App.css";
 
 class Child extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
-      firstName: "kim",
-      lastName: "jisu",
+      num: 0,
     };
   }
-  static getDerivedStateFromProps(nextProps, prevState) {
-    // console.log(
-    //   `nextProps: ${JSON.stringify(nextProps)} prevState: ${JSON.stringify(
-    //     prevState
-    //   )}`
-    // );
-    console.log(nextProps.firstName, prevState.firstName);
-    if (nextProps.firstName !== prevState.firstName)
-      return { firstName: nextProps.firstName };
-    else return null;
+
+  // static getDerivedStateFromProps(nextProps, prevState) {
+  //   if (nextProps.num !== prevState.num) return { num: nextProps.num };
+  //   return null;
+  // }
+
+  shouldComponentUpdate(newProps, nextState, nextContext) {
+    if (this.state.num !== newProps.num) return false;
+    return true;
   }
 
   render() {
-    return <>name: {this.state.firstName}</>;
+    console.log("Child");
+    return <>Child</>;
   }
 }
 
 function App() {
-  const [firstName, setFirstName] = useState("min");
-  const [lastName, setLastName] = useState("");
-
+  const [num, setNum] = useState(0);
+  useEffect(() => {
+    console.log(num);
+  });
   return (
-    <div className="App">
-      <Child firstName={firstName} lastName={lastName} />
-      <br />
-      <button onClick={() => setFirstName("minsu")}>button</button>
-    </div>
+    <>
+      <Child />
+      <button onClick={() => setNum(num + 1)}>{num}</button>
+    </>
   );
 }
 
